@@ -3,7 +3,8 @@ import hashlib
 import uuid
 
 import sqlalchemy
-import sqlalchemy.ext.declarative
+
+import geochat.ormbase
 
 
 def get_by_token(session, token):
@@ -24,7 +25,7 @@ def login(session, name, password):
 BaseUser = sqlalchemy.ext.declarative.declarative_base()
 
 
-class User(BaseUser):
+class User(geochat.ormbase.Base):
     """A user."""
 
     __tablename__ = 'users'

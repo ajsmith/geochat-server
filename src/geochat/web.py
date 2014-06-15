@@ -60,8 +60,12 @@ class WebAPI(object):
 
     def say(self):
         request = bottle.request
+        auth_cookie = request.get_cookie('geochat.auth.token')
+        user = geochat.user.get_by_token(self.session, auth_cookie)
         message = geochat.message.Message(
-            created=datetime.datetime.now(), **dict(request.params)
+            created=datetime.datetime.now(),
+            user_id=user.id,
+            **dict(request.params)
             )
         self.session.add(message)
         self.session.commit()

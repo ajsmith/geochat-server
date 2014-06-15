@@ -20,7 +20,7 @@ Register
 
 Register a new user.
 
-    >>> response = app.post('/register', {'username': 'Bilbo', 'password': 'secret'})
+    >>> response = app.post('/register', {'username': 'Bilbo', 'password': 'secret1'})
     >>> print response
     Response: 200 OK
     Content-Type: text/html; charset=UTF-8
@@ -39,17 +39,36 @@ The GET method is disallowed.
     Set-Cookie: geochat.auth.token=; expires=Thu, 01 Jan 1970 00:00:00 GMT; Max-Age=-1
     Goodbye.
 
+    >>> response = app.post('/register', {'username': 'Sauron', 'password': 'secret2'})
+    >>> print response
+    Response: 200 OK
+    Content-Type: text/html; charset=UTF-8
+    Set-Cookie: geochat.auth.token=...; Path=/
+    >>> auth_cookie = response.headers['Set-Cookie']
+
+    >>> print app.post('/logout')
+    Response: 200 OK
+    Content-Type: text/html; charset=UTF-8
+    Set-Cookie: geochat.auth.token=; expires=Thu, 01 Jan 1970 00:00:00 GMT; Max-Age=-1
+    Goodbye.
+
 
 Login
 =====
 
 Log in the user.
 
-    >>> print app.post('/login', {'username': 'Bilbo', 'password': 'secret'}, status='*')
+    >>> print app.post('/login', {'username': 'Bilbo', 'password': 'secret1'})
     Response: 200 OK
     Content-Type: text/html; charset=UTF-8
     Set-Cookie: geochat.auth.token=...; Path=/
     Hello, Bilbo!
+
+    >>> print app.post('/logout')
+    Response: 200 OK
+    Content-Type: text/html; charset=UTF-8
+    Set-Cookie: geochat.auth.token=; expires=Thu, 01 Jan 1970 00:00:00 GMT; Max-Age=-1
+    Goodbye.
 
 
 Say Message
@@ -57,37 +76,46 @@ Say Message
 
 Say a message in the area.
 
-    >>> data = {'author': 'Sauron', 'body': 'Where did I put that ring?', 'location': 'POINT(38.884218 -76.995027)'}
+    >>> print app.post('/login', {'username': 'Sauron', 'password': 'secret2'})
+    Response: 200 OK
+    Content-Type: text/html; charset=UTF-8
+    Set-Cookie: geochat.auth.token=...; Path=/
+    Hello, Sauron!
+
+    >>> data = {'body': 'Where did I put that ring?', 'location': 'POINT(38.884218 -76.995027)'}
     >>> print app.post('/say', data, status='*')
     Response: 200 OK
     Content-Type: text/html; charset=UTF-8
 
 Say a few more messages.
 
+    >>> print app.post('/login', {'username': 'Bilbo', 'password': 'secret1'})
+    Response: 200 OK
+    Content-Type: text/html; charset=UTF-8
+    Set-Cookie: geochat.auth.token=...; Path=/
+    Hello, Bilbo!
+
     >>> data = {
-    ...     'author': u'Bilbo',
     ...     'body': u'I found the ring!',
     ...     'location': 'POINT(38.8951 -77.0367)',
     ... }
-    >>> print app.post('/say', data, status='*')
+    >>> print app.post('/say', data)
     Response: 200 OK
     Content-Type: text/html; charset=UTF-8
 
     >>> data = {
-    ...     'author': u'Bilbo',
     ...     'body': u'Just buying groceries!',
     ...     'location': 'POINT(38.889075 -77.091012)',
     ... }
-    >>> print app.post('/say', data, status='*')
+    >>> print app.post('/say', data)
     Response: 200 OK
     Content-Type: text/html; charset=UTF-8
 
     >>> data = {
-    ...     'author': u'Bilbo',
     ...     'body': u'Having a latte!',
     ...     'location': 'POINT(38.890214 -77.086039)',
     ... }
-    >>> print app.post('/say', data, status='*')
+    >>> print app.post('/say', data)
     Response: 200 OK
     Content-Type: text/html; charset=UTF-8
 

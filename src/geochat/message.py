@@ -3,7 +3,10 @@ import json
 import geoalchemy2
 import geoalchemy2.shape
 import sqlalchemy
-import sqlalchemy.ext.declarative
+import sqlalchemy.orm
+
+import geochat.ormbase
+import geochat.user
 
 
 def get_all(session):
@@ -22,10 +25,7 @@ def get_local(session, location):
     )
 
 
-BaseMessage = sqlalchemy.ext.declarative.declarative_base()
-
-
-class Message(BaseMessage):
+class Message(geochat.ormbase.Base):
     """A chat message."""
 
     __tablename__ = 'messages'
@@ -35,10 +35,16 @@ class Message(BaseMessage):
         sqlalchemy.Sequence('messages_id_seq'),
         primary_key=True,
     )
+    user_id = sqlalchemy.Column(
+        sqlalchemy.Integer, sqlalchemy.ForeignKey('users.id'))
     created = sqlalchemy.Column(sqlalchemy.DateTime(timezone=True))
-    author = sqlalchemy.Column(sqlalchemy.Text)
     body = sqlalchemy.Column(sqlalchemy.Text)
     location = sqlalchemy.Column(geoalchemy2.Geography(geometry_type='POINT', srid=4326))
+
+    user = sqlalchemy.orm.relationship(
+        geochat.user.User,
+        backref=sqlalchemy.orm.backref('messages', order_by=id),
+    )
 
     def location_as_shape(self):
         return geoalchemy2.shape.to_shape(self.location)
@@ -49,7 +55,7 @@ class Message(BaseMessage):
             'data': {
                 'id': self.id,
                 'created': self.created.ctime(),
-                'author': self.author,
+                'author': self.user.name,
                 'body': self.body,
                 'location_wkt': str(self.location_as_shape()),
             }
