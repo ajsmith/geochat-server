@@ -25,10 +25,9 @@ def init():
     conn.close()
     _log.info('Created postgis extensions.')
 
-    geochat.user.User.__table__.create(engine)
-    _log.info('Created User table.')
-    geochat.message.Message.__table__.create(engine)
-    _log.info('Created Message table.')
+    for cls in (geochat.user.User, geochat.message.Message):
+        cls.__table__.create(engine)
+        _log.info('Created %s table.', cls.__name__)
 
 
 def db_url(db_name):
