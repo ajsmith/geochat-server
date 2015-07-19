@@ -128,9 +128,10 @@ Get messages in the area.
     >>> print app.get('/local', {'location': 'POINT(38.884218 -76.995027)'}, status='*')
     Response: 200 OK
     Content-Type: application/json
-    {"local_messages": [{"data": {"body": "Where did I put that ring?", "location_wkt": "POINT (38.8842179999999971 -76.9950269999999932)", "author": "Sauron", "id": 1, "created": "..."}, "data_type": "message"}]}
+    {"local_messages": [{"data": {"body": "Where did I put that ring?", "location_wkt": "POINT (38.884218 -76.99502699999999)", "author": "Sauron", "id": 1, "created": "..."}, "data_type": "message"}]}
 
     >>> print app.get('/local', {'location': 'POINT(38.889546 -77.035244)'})
     Response: 200 OK
     Content-Type: application/json
-    {"local_messages": [{"data": {"body": "I found the ring!", "location_wkt": "POINT (38.8950999999999993 -77.0366999999999962)", "author": "Bilbo", "id": 2, "created": "..."}, "data_type": "message"}]}
+    {"local_messages": [{"data": {"body": "I found the ring!", "location_wkt": "POINT (38.8951 -77.0367)", "author": "Bilbo", "id": 2, "created": "..."}, "data_type": "message"}]}
+
