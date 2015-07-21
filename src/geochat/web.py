@@ -2,6 +2,7 @@ import datetime
 import json
 
 import bottle
+import waitress
 
 import geochat.config
 import geochat.db
@@ -12,9 +13,7 @@ import geochat.user
 def serve():
     web_api = geochat.web.WebAPI()
     config = geochat.config.get()
-    bottle.run(
-        web_api.app, server='wsgiref', host='0.0.0.0', port=config.http_port,
-    )
+    waitress.serve(web_api.app, host='0.0.0.0', port=config.http_port)
 
 
 class WebAPI(object):

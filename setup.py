@@ -19,5 +19,6 @@ setup(
         'WebTest',
         'bottle',
         'psycopg2',
+        'waitress',
     ],
 )
