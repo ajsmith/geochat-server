@@ -34,7 +34,8 @@ def db_url(db_name):
     config = geochat.config.get()
     host = config.db_host
     port = config.db_port
-    return 'postgresql+psycopg2://%s:%s/%s' %  (host, port, db_name)
+    user = config.db_user
+    return 'postgresql+psycopg2://%s@%s:%s/%s' %  (user, host, port, db_name)
 
 
 def get_engine():

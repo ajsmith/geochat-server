@@ -34,7 +34,7 @@ def setUp(test):
     logger.setLevel(0)
 
     # Configure the application.
-    geochat.config.update(db_host='localhost', db_port=10000, http_port=10080)
+    geochat.config.update(db_host='db', db_port=5432, http_port=8080)
 
 
 def tearDown(test):
