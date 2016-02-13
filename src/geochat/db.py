@@ -11,14 +11,18 @@ import geochat.user
 _log = logging.getLogger(__name__)
 
 
-def init():
+def create():
     engine = sqlalchemy.create_engine(db_url('postgres'))
     conn = engine.connect()
     conn.execute('COMMIT;')
     conn.execute('CREATE DATABASE geochat;')
+    conn.execute('CREATE ROLE geochat WITH LOGIN;')
+    conn.execute('GRANT ALL ON DATABASE geochat TO geochat;')
     conn.close()
     _log.info('Created database.')
 
+
+def init():
     engine = get_engine()
     conn = engine.connect()
     conn.execute('CREATE EXTENSION postgis;')

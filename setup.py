@@ -2,6 +2,7 @@ from setuptools import setup, find_packages
 
 entry_points = """\
 [console_scripts]
+geochat-createdb=geochat.cli:createdb
 geochat-initdb=geochat.cli:initdb
 geochatd=geochat.cli:main
 """
