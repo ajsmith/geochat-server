@@ -1,0 +1,3 @@
+FROM ajsmith/geochat-server:testing
+MAINTAINER Alex Smith <alex.smith@redhat.com>
+ENTRYPOINT ["/var/lib/geochat/run_py_tests.sh"]

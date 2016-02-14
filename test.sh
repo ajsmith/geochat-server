@@ -3,10 +3,19 @@ set -e
 
 cd $(dirname $0)
 
-rm -rf var
-mkdir -p var/{data,run}
-initdb var/data
-postgres -D var/data -k $(pwd)/var/run -p 10000 2>&1 > var/log &
-sleep 1
-bash --rcfile env/bin/activate -c 'python setup.py test'
-kill %1
+# Remove old test database, if exists.
+docker stop geochat-test-db && docker rm geochat-test-db || true
+
+# Launch a new test database.
+docker run -d --name geochat-test-db mdillon/postgis
+
+# Build fresh images for testing.
+docker build -t ajsmith/geochat-server:testing -f docker/Dockerfile .
+docker build -t ajsmith/geochat-test:latest -f docker/Dockerfile.test .
+
+# Run the tests.
+docker run -i --link geochat-test-db:db --rm ajsmith/geochat-test
+
+# Remove test images.
+docker rmi ajsmith/geochat-test:latest
+docker rmi ajsmith/geochat-server:testing
