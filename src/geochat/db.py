@@ -21,14 +21,15 @@ def create():
     conn.close()
     _log.info('Created database.')
 
-
-def init():
     engine = get_engine()
     conn = engine.connect()
     conn.execute('CREATE EXTENSION postgis;')
     conn.close()
     _log.info('Created postgis extensions.')
 
+
+def init():
+    engine = get_engine()
     for cls in (geochat.user.User, geochat.message.Message):
         cls.__table__.create(engine)
         _log.info('Created %s table.', cls.__name__)

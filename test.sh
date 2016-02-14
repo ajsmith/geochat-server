@@ -7,7 +7,7 @@ cd $(dirname $0)
 docker stop geochat-test-db && docker rm geochat-test-db || true
 
 # Launch a new test database.
-docker run -d --name geochat-test-db mdillon/postgis
+docker run -d -p 5432:5432 --name geochat-test-db mdillon/postgis
 
 # Build fresh images for testing.
 docker build -t ajsmith/geochat-server:testing -f docker/Dockerfile .
