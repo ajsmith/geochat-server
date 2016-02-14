@@ -1,6 +1,4 @@
-===============
-Geo Chat Server
-===============
+# Geo Chat Server
 
 A simple location centric chat server.
 
@@ -12,9 +10,7 @@ Python packaging and testing practices, and Docker based deployment.
 If you happen to find a use for this project or have ideas for extending it, by
 all means let me know, file an issue, or send me a pull request!
 
-
-Requirements
-============
+# Requirements
 
 Under Docker the requirements are pretty simple: just have Docker installed and
 running.
@@ -30,30 +26,28 @@ requirements are:
 - Python psycopg2
 - Python geos
 
-
-Compatibility
-=============
+# Compatibility
 
 This software has been tested on Fedora Linux, but may also work on other
 operating systems.
 
-
-Very Quick Start
-================
+# Very Quick Start
 
 The Very Quick Start uses the Docker based build.
 
-Step 1: Run the tests::
+Step 1: Run the tests:
 
-  $ ./test.sh
+```shell
+$ ./test.sh
+```
 
-Step 2: Run the server::
+Step 2: Run the server:
 
-  $ docker run -d -p 8080:8080/tcp --link geochat-test-db:db ajsmith/geochat-server:testing
+```shell
+$ docker run -d -p 8080:8080/tcp --link geochat-test-db:db ajsmith/geochat-server:testing
+```
 
-
-What just happened?
--------------------
+## What just happened?
 
 The test script starts a PostgreSQL database container with PostGIS extensions
 enabled, then builds the Geochat test images and runs the Python tests. The
